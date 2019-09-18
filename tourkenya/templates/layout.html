@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+    <head>
+        {% include 'header_content.html' %}
+        <title>gugu gaga</title>
+    </head>
+
+    <body>
+        {% include 'navbar.html' %}
+        <div class="container">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        {% include 'js_scripts.html' %}
+    </body>
+    {% include 'footer.html' %}
+</html>
