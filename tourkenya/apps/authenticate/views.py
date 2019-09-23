@@ -27,10 +27,11 @@ class SignUpAPIView(CreateAPIView):
 
         # User response upon successful registration
         response_message = {
-            "message": " You have been successfully Registered, Proceed to login"
+            "message": "You have been successfully Registered,Proceed to login"
         }
 
         return Response(response_message, status=status.HTTP_201_CREATED)
+
 
 """
  View to signin users
