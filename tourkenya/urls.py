@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/', include('tourkenya.apps.authenticate.urls')),
+
+    path('api/article/', include('tourkenya.apps.articles.urls')),
 ]

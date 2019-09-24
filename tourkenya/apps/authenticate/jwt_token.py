@@ -1,6 +1,10 @@
-import jwt, os
-
+import jwt
+import os
 import datetime
+
+from django.contrib.auth import get_user_model
+from rest_framework.authentication import TokenAuthentication 
+from rest_framework import exceptions
 
 """
     Class to create user token to be used as access token upon login
@@ -11,8 +15,9 @@ import datetime
 """
 
 
-class UserAuthToken:
+class UserAuthToken(TokenAuthentication):
 
+    @staticmethod
     def generate_access_token(user):
         pay_load = {"email": user.get('email'),
                     "iat": datetime.datetime.utcnow(),
@@ -26,3 +31,20 @@ class UserAuthToken:
 
         # Return user token created
         return (jwt_token)
+
+    #  Method to decode user token from request header
+    def authenticate_credentials(self, key):
+        # First try to decode the token
+        # then fecth the user data that concides with the user email
+        # If the token is older that 120 mins or 2hrs the token has expired
+        # raise a validation error and for user to get a new token
+        # ONLY when the token is valid return the user and the decoded paylod
+        try:
+            payload = jwt.decode(key, os.getenv("SECRET_KEY"))
+            user = get_user_model().objects.get(email=payload["email"])
+
+        except jwt.ExpiredSignatureError:
+            raise exceptions.AuthenticationFailed(
+                'Token has expired please request for another'
+            )
+        return (user, payload)

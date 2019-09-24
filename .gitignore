@@ -105,7 +105,8 @@ tk/
 .mypy_cache/
 
 # Migration files
-migrations/**
+**/migrations/*
+!**/migrations/__init__.py
 
 # Vscode configs
 .Vscode
