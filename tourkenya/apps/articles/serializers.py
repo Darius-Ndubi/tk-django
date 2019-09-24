@@ -29,3 +29,14 @@ class ArticleSerializer(serializers.ModelSerializer):
         article = Articles(**valid_data)
         article.save()
         return article
+
+
+"""
+    Serializer to load all article fields for the user to view
+"""
+
+
+class ViewArticlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Articles
+        fields = '__all__'

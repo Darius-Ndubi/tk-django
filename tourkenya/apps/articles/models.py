@@ -21,7 +21,3 @@ class Articles(models.Model):
     )
     draft = models.BooleanField(default=True)
     posted = models.BooleanField(default=False)
-
-    # Method to return Article title when query is made to the database
-    def __str__(self):
-        return self.title

@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from tourkenya.apps.articles.views import ViewAllArticles
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/', include('tourkenya.apps.authenticate.urls')),
 
     path('api/article/', include('tourkenya.apps.articles.urls')),
+    path('api/articles/', ViewAllArticles.as_view(), name='list_all_articles')
 ]

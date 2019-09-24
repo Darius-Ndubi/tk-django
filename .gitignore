@@ -110,3 +110,6 @@ tk/
 
 # Vscode configs
 .Vscode
+
+
+.DS_Store
