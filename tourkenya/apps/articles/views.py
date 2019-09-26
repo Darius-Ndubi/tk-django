@@ -82,3 +82,31 @@ class SpecificArticleView(RetrieveUpdateDestroyAPIView):
             instance=article, context={'request': request})
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Method to edit user article. Takes in user token and article_id
+    def put(self, request, article_id):
+        # Try to retrieve the article or raise a 404 if article is not found
+        article = get_object_or_404(Articles.objects.all(), id=article_id)
+
+        # pick article data from the user
+        article_update = request.data
+        context = {'request': request}
+        
+        # Check if user is authorized
+        ArticleSerializer.check_user_authorization(request.user, article_id)
+
+        #  user serializer to update data in the db
+        serializer = ArticleSerializer(
+            instance=article, data=article_update, context=context
+        )
+        # Validate the data and save to the database
+        if serializer.is_valid():
+            serializer.save()
+            response_message = {
+                "message": "Article updated successfully",
+                "article": serializer.data
+            }
+            # Return message to user upon successfull save
+            return Response(response_message, status=status.HTTP_200_OK)
+        # Return message 400 incase of wrong data
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

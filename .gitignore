@@ -106,10 +106,13 @@ tk/
 
 # Migration files
 **/migrations/*
-!**/migrations/__init__.py
+!**/migrations/__init__.py`
 
 # Vscode configs
 .Vscode
 
 
 .DS_Store
+
+
+tourkenya_db/
