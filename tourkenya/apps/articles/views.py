@@ -80,7 +80,7 @@ class SpecificArticleView(RetrieveUpdateDestroyAPIView):
 
         serializer = ViewArticlesSerializer(
             instance=article, context={'request': request})
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # Method to edit user article. Takes in user token and article_id
@@ -91,7 +91,7 @@ class SpecificArticleView(RetrieveUpdateDestroyAPIView):
         # pick article data from the user
         article_update = request.data
         context = {'request': request}
-        
+
         # Check if user is authorized
         ArticleSerializer.check_user_authorization(request.user, article_id)
 
@@ -110,3 +110,20 @@ class SpecificArticleView(RetrieveUpdateDestroyAPIView):
             return Response(response_message, status=status.HTTP_200_OK)
         # Return message 400 incase of wrong data
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Method to handle delete requests
+    def delete(self, request, article_id):
+        # Try to find the article else throw 404 error
+        get_object_or_404(Articles.objects.all(), id=article_id)
+
+        # Check for user psermissions
+        ArticleSerializer.check_user_authorization(request.user, article_id)
+        # Delete the article hat has the  passed in id
+        Articles.objects.all().filter(id=article_id).delete()
+
+        # User response message upon successful deletion
+        response_message = {
+            "message": "Article was successfully deleted"
+        }
+
+        return Response(response_message, status=status.HTTP_200_OK)
