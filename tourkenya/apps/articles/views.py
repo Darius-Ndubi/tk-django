@@ -1,5 +1,9 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import (
+    CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
+)
 from rest_framework.permissions import (
     IsAuthenticated, IsAuthenticatedOrReadOnly
 )
@@ -8,8 +12,8 @@ from rest_framework.response import Response
 from .serializers import (
     ArticleSerializer, ViewArticlesSerializer
 )
-from .models import Articles
 
+from .models import Articles
 
 """
     View to create an article from the user
@@ -60,3 +64,21 @@ class ViewAllArticles(ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = ViewArticlesSerializer
     queryset = Articles.objects.all()
+
+
+"""
+    View to retrieve specific article,
+    update it and delete it
+"""
+
+
+class SpecificArticleView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, article_id):
+        article = get_object_or_404(Articles.objects.all(), id=article_id)
+
+        serializer = ViewArticlesSerializer(
+            instance=article, context={'request': request})
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
