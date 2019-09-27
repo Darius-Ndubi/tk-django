@@ -1,0 +1,2 @@
+# ignore local virtualenv folder while creating the docker environment
+tk/
