@@ -104,15 +104,11 @@ tk/
 # mypy
 .mypy_cache/
 
-# Migration files
-**/migrations/*
-!**/migrations/__init__.py`
-
 # Vscode configs
 .Vscode
 
 
 .DS_Store
 
-
+# Docker environment db
 tourkenya_db/
